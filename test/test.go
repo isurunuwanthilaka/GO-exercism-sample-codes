@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"time"
 )
 
@@ -10,11 +11,25 @@ func f(s string) {
 }
 
 func main() {
+	nan := math.NaN()
+	fmt.Print(nan)
+	var num int
 	channel := make(chan string, 1)
 	go goroute(channel)
+	go goroute1(&num)
 	for {
 		time.Sleep(3 * time.Second)
 		fmt.Print(<-channel)
+		fmt.Printf("Num val in main channel : %v", num)
+	}
+}
+func goroute1(num *int) {
+	count := 0
+	for {
+		time.Sleep(1 * time.Second)
+		count++
+		fmt.Println(count)
+		*num = count
 	}
 }
 
